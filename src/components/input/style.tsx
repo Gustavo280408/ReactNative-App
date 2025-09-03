@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { themas } from "../../global/themes";
 
 export const style = StyleSheet.create({
+
     boxInput: {
         width: '100%',
         height: 40,
@@ -11,7 +12,7 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 5,
-        backgroundColor: themas.colors.gray,
+        backgroundColor: themas.colors.lightGray,
         borderColor: themas.colors.lightGray
     },
     input: {
@@ -25,4 +26,10 @@ export const style = StyleSheet.create({
         color: themas.colors.gray,
         marginTop: 20
     },
+    Icon: {
+        width: '100%'
+    },
+    Button: {
+        width: '10%'
+    }
 })
