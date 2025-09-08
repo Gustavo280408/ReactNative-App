@@ -9,6 +9,7 @@ import Logo from "../../assets/logo.png";
 import { MaterialIcons, Octicons } from '@expo/vector-icons'
 import { themas } from "../../global/themes"
 import { Input } from "../../components/input";
+import { Button } from "../../components/Button";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -97,6 +98,9 @@ export default function Login() {
                             <Text style={style.textButton}>Entrar</Text>
                     }
                 </TouchableOpacity>
+            </View>
+            <View style={style.boxBotton}>
+                <Button text="Entrar" loading={loading} onPress={() => getLogin} />
             </View>
             <Text style={style.textBotton}>Não tem conta?
                 <Text style={{ color: themas.colors.primary }}> Crie agora!</Text></Text>
