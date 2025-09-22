@@ -43,8 +43,8 @@ export default function List() {
             <View style={style.rowCardLeft}>
                 <Ball color="red"/>
                 <View>
-                    <Text>{item.title}</Text>
-                    <Text>{item.description}</Text>
+                    <Text style={style.titleCard}>{item.title}</Text>
+                    <Text style={style.descriptionCard}>{item.description}</Text>
                 </View>
             </View>
                  <Flag caption="Urgente" color={themas.colors.red}/>
