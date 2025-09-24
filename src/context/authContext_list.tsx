@@ -2,10 +2,16 @@ import React, { createContext, useContext, useRef, useEffect } from "react";
 import { Dimensions, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { MaterialIcons, AntDesign} from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
-import { style } from "../pages/login/styles";
 import { Input } from "../components/input";
+import { themas } from "../global/themes";
+import { Flag } from "../components/Flag";
 
 export const AuthContextList: any = createContext({});
+
+const flags = [
+    {caption: 'Urgente', color: themas.colors.red},
+    {caption: 'Opcional', color: themas.colors.blueLight}
+];
 
 export const AuthProviderList = (props: any): any => {
 
@@ -18,6 +24,19 @@ export const AuthProviderList = (props: any): any => {
     useEffect(() => {
         onOpen()
     }, [])
+
+    const _renderFlags = () => {
+        return (
+            flags.map ((item, index) => (
+                <TouchableOpacity key={index}>
+                    <Flag 
+                        caption={item.caption}
+                        color={item.color}
+                    />
+                </TouchableOpacity>
+            ))
+        )
+    }
 
     const _container = () => {
         return (
@@ -61,8 +80,8 @@ export const AuthProviderList = (props: any): any => {
                 </View>
                 <View style={styles.containerFlag}>
                     <Text style={styles.label}>Flags:</Text>
-                    <View style={{}}>
-
+                    <View style={styles.rowFlags}>
+                        {_renderFlags()}
                     </View>
                 </View>
             </View>
@@ -112,5 +131,10 @@ export const styles = StyleSheet.create({
     label: {
         fontWeight: 'bold',
         color: '#000'
+    },
+    rowFlags: {
+        flexDirection: 'row',
+        gap: 10,
+        marginTop: 10
     }
 })
