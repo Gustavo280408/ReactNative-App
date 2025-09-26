@@ -20,6 +20,9 @@ export const AuthProviderList = (props: any): any => {
         modalizeRef?.current?.open();
 
     }
+    const onClose = () => {
+        modalizeRef?.current?.close();
+    }
 
     useEffect(() => {
         onOpen()
@@ -32,6 +35,7 @@ export const AuthProviderList = (props: any): any => {
                     <Flag 
                         caption={item.caption}
                         color={item.color}
+                        selected
                     />
                 </TouchableOpacity>
             ))
@@ -42,7 +46,7 @@ export const AuthProviderList = (props: any): any => {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onClose()}>
                         <MaterialIcons
                             name="close"
                             size={30}
