@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useRef, useEffect } from "react";
-import { Dimensions, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
-import { MaterialIcons, AntDesign} from '@expo/vector-icons';
+import React, { createContext, useContext, useRef, useEffect, useState } from "react";
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
@@ -9,14 +9,21 @@ import { Flag } from "../components/Flag";
 export const AuthContextList: any = createContext({});
 
 const flags = [
-    {caption: 'Urgente', color: themas.colors.red},
-    {caption: 'Opcional', color: themas.colors.blueLight}
+    { caption: 'Urgente', color: themas.colors.red },
+    { caption: 'Opcional', color: themas.colors.blueLight }
 ];
 
 export const AuthProviderList = (props: any): any => {
 
     const modalizeRef = useRef<Modalize>(null);
-    const onOpen = () => {;
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [selectedFlag, setSelected] = useState('Urgente');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedTime, setSelectedTime] = useState(new Date());
+
+    const onOpen = () => {
+        ;
         modalizeRef?.current?.open();
 
     }
@@ -30,9 +37,9 @@ export const AuthProviderList = (props: any): any => {
 
     const _renderFlags = () => {
         return (
-            flags.map ((item, index) => (
+            flags.map((item, index) => (
                 <TouchableOpacity key={index}>
-                    <Flag 
+                    <Flag
                         caption={item.caption}
                         color={item.color}
                         selected
@@ -44,7 +51,10 @@ export const AuthProviderList = (props: any): any => {
 
     const _container = () => {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => onClose()}>
                         <MaterialIcons
@@ -64,22 +74,26 @@ export const AuthProviderList = (props: any): any => {
 
                 </View>
                 <View style={styles.content}>
-                    <Input 
-                    title="Titulo"
-                    labelStyle={styles.label}
+                    <Input
+                        title="Titulo"
+                        labelStyle={styles.label}
+                        value="title"
+                        onChangeText={setTitle}
                     />
-                    <Input 
-                    title="Descrição"
-                    labelStyle={styles.label}
-                    height={100}
-                    multiline
-                    numberOfLines={5}
+                    <Input
+                        title="Descrição"
+                        labelStyle={styles.label}
+                        height={100}
+                        multiline
+                        numberOfLines={5}
+                        value={description}
+                        onChangeText={setDescription} 
                     />
                 </View>
-                <View style={{width: '40%'}}>
-                    <Input 
-                    title="Tempo Limite"
-                    labelStyle={styles.label}
+                <View style={{ width: '40%' }}>
+                    <Input
+                        title="Tempo Limite"
+                        labelStyle={styles.label}
                     />
                 </View>
                 <View style={styles.containerFlag}>
@@ -88,19 +102,19 @@ export const AuthProviderList = (props: any): any => {
                         {_renderFlags()}
                     </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
     return (
-        <AuthContextList.Provider value = {{ onOpen }}>
+        <AuthContextList.Provider value={{ onOpen }}>
             {props.children}
             <Modalize
-            ref={modalizeRef}
-            //modalHeight={Dimensions.get('window').height / 1.3}
-            childrenStyle= {{height: Dimensions.get('window').height / 1.3}}
-            adjustToContentHeight={true}
+                ref={modalizeRef}
+                //modalHeight={Dimensions.get('window').height / 1.3}
+                childrenStyle={{ height: Dimensions.get('window').height / 1.3 }}
+                adjustToContentHeight={true}
             >
-            {_container()}
+                {_container()}
             </Modalize>
         </AuthContextList.Provider>
     )
