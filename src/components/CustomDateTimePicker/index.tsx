@@ -18,7 +18,9 @@ const CustomDateTimePicker = ({ type, onDateChange, show, setShow }) => {
         onRequestClose={() => setShow(false)}
         >
             <View style={style.modalOverlay}>
-                <View style={style.container}>
+                <View style={[style.container, Platform.OS === 'android' && { backgroundColor: 'transparent'}
+                    
+                ]}>
                     <DateTimePicker 
                     value={date}
                     mode={type}

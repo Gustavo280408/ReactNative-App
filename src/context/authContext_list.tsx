@@ -22,6 +22,8 @@ export const AuthProviderList = (props: any): any => {
     const [selectedFlag, setSelected] = useState('Urgente');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setTimePicker] = useState(false);
 
     const onOpen = () => {
         ;
@@ -49,7 +51,12 @@ export const AuthProviderList = (props: any): any => {
             ))
         )
     }
-
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    }
+    const handleTimeChange = (date) => {
+        setSelected(date);
+    }
     const _container = () => {
         return (
             <KeyboardAvoidingView
@@ -88,7 +95,7 @@ export const AuthProviderList = (props: any): any => {
                         multiline
                         numberOfLines={5}
                         value={description}
-                        onChangeText={setDescription} 
+                        onChangeText={setDescription}
                     />
                 </View>
                 <View style={{ width: '40%' }}>
@@ -96,10 +103,16 @@ export const AuthProviderList = (props: any): any => {
                         title="Tempo Limite"
                         labelStyle={styles.label}
                     /> */}
-                    <CustomDateTimePicker 
-                        onDateChange={() => {}}
-                        setShow={() => {}}
-                        show={true}
+                    <CustomDateTimePicker
+                        onDateChange={handleDateChange}
+                        setShow={setShowDatePicker}
+                        show={showDatePicker}
+                        type={'date'}
+                    />
+                    <CustomDateTimePicker
+                        onDateChange={handleDateChange}
+                        setShow={setShowTimePicker}
+                        show={showDatePicker}
                         type={'date'}
                     />
                 </View>
