@@ -5,6 +5,7 @@ import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
 import { Flag } from "../components/Flag";
+import CustomDateTimePicker from "../components/CustomDateTimePicker";
 
 export const AuthContextList: any = createContext({});
 
@@ -91,9 +92,15 @@ export const AuthProviderList = (props: any): any => {
                     />
                 </View>
                 <View style={{ width: '40%' }}>
-                    <Input
+                    {/*<Input
                         title="Tempo Limite"
                         labelStyle={styles.label}
+                    /> */}
+                    <CustomDateTimePicker 
+                        onDateChange={() => {}}
+                        setShow={() => {}}
+                        show={true}
+                        type={'date'}
                     />
                 </View>
                 <View style={styles.containerFlag}>
