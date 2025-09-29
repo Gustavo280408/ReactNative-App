@@ -6,6 +6,7 @@ import { Input } from "../components/input";
 import { themas } from "../global/themes";
 import { Flag } from "../components/Flag";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContextList: any = createContext({});
 
@@ -34,10 +35,6 @@ export const AuthProviderList = (props: any): any => {
         modalizeRef?.current?.close();
     }
 
-    useEffect(() => {
-        onOpen()
-    }, [])
-
     const _renderFlags = () => {
         return (
             flags.map((item, index) => (
@@ -56,6 +53,16 @@ export const AuthProviderList = (props: any): any => {
     }
     const handleTimeChange = (date) => {
         setSelected(date);
+    }
+    const handleSave = () => {
+        const newItem = {
+            item: 0,
+            title: 'Titulo',
+            description: 'Descrição',
+            flags: 'Flags',
+            timeLimite: '01.01.2025'
+        }
+        console.log(newItem)
     }
     const _container = () => {
         return (

@@ -1,6 +1,15 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "target": "esnext",
+    "module": "node16",
+    "jsx": "react-jsx",
+    "strict": false,
+    "noImplicitAny": false,
+    "moduleResolution": "node16",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
