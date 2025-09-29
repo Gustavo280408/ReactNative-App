@@ -23,7 +23,7 @@ export const AuthProviderList = (props: any): any => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showTimePicker, setTimePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
     const onOpen = () => {
         ;
@@ -103,6 +103,26 @@ export const AuthProviderList = (props: any): any => {
                         title="Tempo Limite"
                         labelStyle={styles.label}
                     /> */}
+                    <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{width: 200}}>
+                            <Input 
+                            title="Data Limite"
+                            labelStyle={styles.label}
+                            editable={false}
+                            value={selectedDate.toLocaleDateString()}
+                            onPress={() => setShowDatePicker(true)}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Input 
+                            title="Hora Limite"
+                            labelStyle={styles.label}
+                            editable={false}
+                            value={selectedDate.toLocaleTimeString()}
+                            onPress={() => setShowTimePicker(true)}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <CustomDateTimePicker
                         onDateChange={handleDateChange}
                         setShow={setShowDatePicker}
