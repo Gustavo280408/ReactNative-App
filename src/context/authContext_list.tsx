@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useRef, useEffect, useState } from "react";
-import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
@@ -25,6 +25,7 @@ export const AuthProviderList = (props: any): any => {
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [item, setItem] = useState(0);
 
     const onOpen = () => {
         ;
@@ -35,14 +36,17 @@ export const AuthProviderList = (props: any): any => {
         modalizeRef?.current?.close();
     }
 
+    useEffect(() => {
+        onOpen()
+    }, [])
+
     const _renderFlags = () => {
         return (
             flags.map((item, index) => (
                 <TouchableOpacity key={index}
                     onPress={() => {
                         setSelectedFlag(item.caption)
-                    }}
-                >
+                    }}>
                     <Flag
                         caption={item.caption}
                         color={item.color}
@@ -58,22 +62,35 @@ export const AuthProviderList = (props: any): any => {
     const handleTimeChange = (date) => {
         setSelectedTime(date);
     }
-    const handleSave = () => {
-        const newItem = {
-            item: Date.now(),
-            title,
-            description,
-            flags: selectedFlag,
-            timeLimite: new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate(),
-                selectedTime.getHours(),
-                selectedTime.getMinutes()
-            ).toISOString(),
+    const handleSave = async () => {
+        if (!title || !description || !selectedFlag) {
+            return Alert.alert('Atenção', 'Preencha os campos corretamente!');
         }
-        console.log(newItem)
+        try {
+            const newItem = {
+                item: Date.now(),
+                title,
+                description,
+                flags: selectedFlag,
+                timeLimite: new Date(
+                    selectedDate.getFullYear(),
+                    selectedDate.getMonth(),
+                    selectedDate.getDate(),
+                    selectedDate.getHours(),
+                    selectedDate.getMinutes()
+                ).toISOString(),
+
+            }
+
+            await AsyncStorage.setItem('tasklist', JSON.stringify(newItem))
+
+        } catch (error) {
+            console.log("Erro ao salvar o item", error)
+        }
+
     }
+
+
     const _container = () => {
         return (
             <KeyboardAvoidingView
@@ -205,7 +222,7 @@ export const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        color: '#000'
+        // color: '#000'
     },
     rowFlags: {
         flexDirection: 'row',
