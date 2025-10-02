@@ -81,7 +81,10 @@ export const AuthProviderList = (props: any): any => {
                 ).toISOString(),
 
             }
-
+            const storageData = await AsyncStorage.getItem('tasklist');
+            console.log(storageData)
+            let taskList = storageData ? JSON.parse(storageData) : [];
+            taskList.push(newItem);
             await AsyncStorage.setItem('tasklist', JSON.stringify(newItem))
 
         } catch (error) {
