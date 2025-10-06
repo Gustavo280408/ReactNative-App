@@ -9,8 +9,9 @@ export const style = StyleSheet.create({
     },
     header: {
         width: '100%',
-        height: Dimensions.get('window').height/6,
+        height: Dimensions.get('window').height / 6,
         backgroundColor: themas.colors.primary,
+        paddingHorizontal: 20,
         justifyContent: 'center'
     },
     greeting: {
@@ -24,7 +25,7 @@ export const style = StyleSheet.create({
     boxList: {
         flex: 1,
         width: '100%',
-        //backgroundColor: 'red'
+        // backgroundColor: 'red'
     },
     card: {
         width: '100%',
@@ -41,6 +42,7 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
+
     },
     rowCardLeft: {
         width: '70%',
@@ -55,4 +57,14 @@ export const style = StyleSheet.create({
     descriptionCard: {
         color: themas.colors.gray
     },
+    button: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 100,
+        marginVertical: 10,
+        borderRadius: 10
+    }
+
+
 })
