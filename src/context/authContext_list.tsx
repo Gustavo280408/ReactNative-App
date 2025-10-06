@@ -44,7 +44,7 @@ export const AuthProviderList = (props: any): any => {
 
     useEffect(() => {
         console.log(taskList.length)
-    }, [taskList]);
+    }, []);
 
     const _renderFlags = () => {
         return (
@@ -113,6 +113,17 @@ export const AuthProviderList = (props: any): any => {
         setSelectedTime(new Date())
     }
 
+    async function get_taskList() {
+        try {
+            const storageData =  await AsyncStorage.getItem('taskList');
+            const taskList = storageData ? JSON.parse(storageData) : []
+            setTaskList(taskList)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     const _container = () => {
         return (
             <KeyboardAvoidingView
