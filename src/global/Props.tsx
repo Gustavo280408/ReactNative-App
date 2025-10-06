@@ -1,6 +1,7 @@
  export interface AuthContextType {
     taskList: Array<PropCard>,
     onOpen: void,
+    handleDelete: Function,
 }
 
  export type PropCard = {

@@ -13,10 +13,10 @@ import { Swipeable } from "react-native-gesture-handler";
 
 export default function List() {
 
-    const { taskList } = useContext<AuthContextType>(AuthContextList)
+    const { taskList, handleDelete} = useContext<AuthContextType>(AuthContextList)
     const swipeableRefs = useRef([])
-    const renderRightActions = () => {
-        return (<View style={style.button}>
+    const renderRightActions = () => (
+        (<View style={style.button}>
             <AntDesign
                 name="delete"
                 size={20}
@@ -24,6 +24,14 @@ export default function List() {
             />
         </View>
         )
+    );
+    const handleSwipeOpen = (directions: 'right' | 'left', item, index) => {
+        if(directions == 'right') {
+            handleDelete(item)
+            swipeableRefs.current[index]?.close()
+        } else {
+            //
+        }
     }
     const renderLeftActions = () => {
         return (
@@ -44,6 +52,7 @@ export default function List() {
                 key={index}
                 renderRightActions={renderRightActions}
                 renderLeftActions={renderLeftActions}
+                onSwipeableOpen={(directions) => handleSwipeOpen(directions, item, index)}
             >
                 <View style={style.card}>
                     <View style={style.rowCard}>
@@ -67,7 +76,7 @@ export default function List() {
         <View style={style.container}>
             <View style={style.header}>
                 <Text style={style.greeting}>Bom dia,
-                    <Text style={{ fontWeight: 'bold' }}> Leonardo Pires</Text></Text>
+                    <Text style={{ fontWeight: 'bold' }}> Gustavo Ribeiro</Text></Text>
                 <View style={style.boxInput}>
                     <Input
                         IconLeft={MaterialIcons}
