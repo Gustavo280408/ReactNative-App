@@ -79,8 +79,8 @@ export const AuthProviderList = (props: any): any => {
                 item: Date.now(),
                 title,
                 description,
-                flags: selectedFlag,
-                timeLimite: new Date(
+                flag: selectedFlag,
+                timeLimit: new Date(
                     selectedDate.getFullYear(),
                     selectedDate.getMonth(),
                     selectedDate.getDate(),
