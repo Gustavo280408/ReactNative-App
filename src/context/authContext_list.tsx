@@ -32,7 +32,8 @@ export const AuthProviderList = (props: any): any => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [item, setItem] = useState(0);
-    const [taskList, setTaskList] = useState([]);
+    const [taskList, setTaskList] = useState<Array<PropCard>>([]);
+    const [taskListBackup, setTaskListBackup] = useState([]);
 
 
     const onOpen = () => {
@@ -44,7 +45,7 @@ export const AuthProviderList = (props: any): any => {
     }
 
     useEffect(() => {
-        console.log(taskList.length)
+        get_taskList()
     }, []);
 
     const _renderFlags = () => {
@@ -77,7 +78,7 @@ export const AuthProviderList = (props: any): any => {
         }
         try {
             const newItem = {
-                item: item !==0 ? item: Date.now(),
+                item: item !== 0 ? item : Date.now(),
                 title,
                 description,
                 flag: selectedFlag,
@@ -91,19 +92,20 @@ export const AuthProviderList = (props: any): any => {
             }
             const storageData = await AsyncStorage.getItem('taskList');
             //console.log(storageData)
-            let taskList = storageData ? JSON.parse(storageData) : [];
+            let taskList: Array<any> = storageData ? JSON.parse(storageData) : [];
 
-            const itemIndex = taskList.findIndex((task) =>task.item === newItem.item)
+            const itemIndex = taskList.findIndex((task) => task.item === newItem.item)
 
-            if  (itemIndex >= 0) {
+            if (itemIndex >= 0) {
                 taskList[itemIndex] = newItem
             } else {
-                taskList.push(newItem);
+                taskList.push(newItem)
             }
 
             await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
 
             setTaskList(taskList)
+            setTaskListBackup(taskList)
             setData()
             onClose()
 
@@ -115,17 +117,18 @@ export const AuthProviderList = (props: any): any => {
     const setData = () => {
         setTitle('')
         setDescription(''),
-        setSelectedFlag('Urgente'),
-        setItem(0)
+            setSelectedFlag('Urgente'),
+            setItem(0)
         setSelectedDate(new Date())
         setSelectedTime(new Date())
     }
 
     async function get_taskList() {
         try {
-            const storageData =  await AsyncStorage.getItem('taskList');
+            const storageData = await AsyncStorage.getItem('taskList');
             const taskList = storageData ? JSON.parse(storageData) : []
             setTaskList(taskList)
+            setTaskListBackup(taskList)
 
         } catch (error) {
             console.log(error)
@@ -138,17 +141,18 @@ export const AuthProviderList = (props: any): any => {
             const StorageData = await AsyncStorage.getItem('taskList')
             const taskList: Array<any> = StorageData ? JSON.parse(StorageData) : []
 
-            const updateTaskList = taskList.filter(item => item.item !== itemToDelete.item)
+            const updatedTaskList = taskList.filter(item => item.item !== itemToDelete.item)
 
-            await AsyncStorage.setItem('taskList', JSON.stringify(updateTaskList))
-            setTaskList(updateTaskList)
+            await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList))
+            setTaskList(updatedTaskList)
+            setTaskListBackup(updatedTaskList)
 
         } catch (error) {
             console.log("Erro ao excluir o item", error)
         }
     }
 
-    const handleEdit = async(itemToEdit: PropCard) => {
+    const handleEdit = async (itemToEdit: PropCard) => {
         try {
             setTitle(itemToEdit.title)
             setDescription(itemToEdit.description)
@@ -163,6 +167,28 @@ export const AuthProviderList = (props: any): any => {
 
         } catch (error) {
             console.log('Erro ao editar')
+        }
+    }
+
+    const filter = (t: string) => {
+        const array = taskListBackup
+        const campos = ['title', 'description']
+
+        if (t) {
+            // Limpar espacos e letra maiuscula ignorada na hora de procurar
+            const searchTerm = t.trim().toLowerCase();
+            const FilteredArray = array.filter((item) => {
+                for (let i = 0; i < campos.length; i++) {
+                    // Ele busca como é digitado e acha ignorando uppercase e espacos,
+                    // Busca exatamente como esta
+                    if (item[campos[i]].trim().toLowerCase().includes(searchTerm))
+                        return true
+                }
+            })
+
+            setTaskList(FilteredArray)
+        } else {
+            setTaskList(array)
         }
     }
 
@@ -257,7 +283,7 @@ export const AuthProviderList = (props: any): any => {
         )
     }
     return (
-        <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit }}>
+        <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit, filter }}>
             {props.children}
             <Modalize
                 ref={modalizeRef}

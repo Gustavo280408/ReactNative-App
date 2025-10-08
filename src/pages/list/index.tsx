@@ -9,22 +9,23 @@ import { themas } from "../../global/themes";
 import { AuthContextList } from "../../context/authContext_list";
 import { formatDateToBR } from "../../global/functions";
 import { AuthContextType, PropCard } from "../../global/Props";
-import { Swipeable } from "react-native-gesture-handler";
+import { Directions, Swipeable } from "react-native-gesture-handler";
 
 export default function List() {
 
-    const { taskList, handleDelete, handleEdit } = useContext<AuthContextType>(AuthContextList)
+    const { taskList, handleDelete, handleEdit, filter } = useContext<AuthContextType>(AuthContextList)
     const swipeableRefs = useRef([])
+
     const renderRightActions = () => (
-        (<View style={style.button}>
+        <View style={style.button}>
             <AntDesign
                 name="delete"
                 size={20}
                 color={'#FFF'}
             />
         </View>
-        )
     );
+
     const handleSwipeOpen = (directions: 'right' | 'left', item, index) => {
         if (directions == 'right') {
             handleDelete(item)
@@ -33,6 +34,7 @@ export default function List() {
         }
         swipeableRefs.current[index]?.close()
     }
+
     const renderLeftActions = () => {
         return (
             <View style={[style.button, { backgroundColor: themas.colors.blueLight }]}>
@@ -44,6 +46,7 @@ export default function List() {
             </View>
         )
     }
+
     const _renderCard = (item: PropCard, index) => {
         const color = item.flag == 'Opcional' ? themas.colors.blueLight : themas.colors.red
         return (
@@ -81,6 +84,7 @@ export default function List() {
                     <Input
                         IconLeft={MaterialIcons}
                         IconLeftName="search"
+                        onChangeText={(t) => filter(t)}
                     />
                 </View>
             </View>
