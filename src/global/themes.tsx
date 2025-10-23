@@ -6,6 +6,8 @@ export const themas = {
         gray: 'gray',
         bgScreen: '#f1f7fa',
         red: '#FF494C',
-        blueLight: '#87CEF6'
+        blueLight: '#87CEF6',
+        green: 'green',
+        yellow: '#D19300'
     }
 }

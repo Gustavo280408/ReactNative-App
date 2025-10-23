@@ -16,8 +16,10 @@ import { PropCard } from "../global/Props";
 export const AuthContextList: any = createContext({});
 
 const flags = [
-    { caption: 'Urgente', color: themas.colors.red },
-    { caption: 'Opcional', color: themas.colors.blueLight }
+    { caption: 'Audiência', color: themas.colors.red },
+    { caption: 'Sessão', color: themas.colors.blueLight },
+    { caption: 'Intervalo', color: themas.colors.yellow },
+    { caption: 'Estudos', color: themas.colors.green },
 ];
 
 
@@ -26,7 +28,7 @@ export const AuthProviderList = (props: any): any => {
     const modalizeRef = useRef<Modalize>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedFlag, setSelectedFlag] = useState('Urgente');
+    const [selectedFlag, setSelectedFlag] = useState('Audiência');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
