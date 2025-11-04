@@ -100,7 +100,7 @@ export default function List() {
             <View style={style.header}>
                 <Text style={style.greeting}>
                     Bom dia,
-                    <Text style={{ fontWeight: 'bold' }}> Matheus</Text>
+                    <Text style={{ fontWeight: 'bold' }}>Gustavo Ribeiro</Text>
                 </Text>
                 <View style={style.boxInput}>
                     <Input

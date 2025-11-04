@@ -16,7 +16,7 @@ import { PropCard } from "../global/Props";
 export const AuthContextList: any = createContext({});
 
 const flags = [
-    { caption: 'Audiência', color: themas.colors.red },
+    { caption: 'Reunião', color: themas.colors.red },
     { caption: 'Sessão', color: themas.colors.blueLight },
     { caption: 'Intervalo', color: themas.colors.yellow },
     { caption: 'Estudos', color: themas.colors.green },
@@ -51,22 +51,35 @@ export const AuthProviderList = (props: any): any => {
     }, []);
 
     const _renderFlags = () => {
-        return (
-            flags.map((item, index) => (
-                <TouchableOpacity key={index}
-                    onPress={() => {
-                        setSelectedFlag(item.caption)
-                    }}
-                >
-                    <Flag
-                        caption={item.caption}
-                        color={item.color}
-                        selected={item.caption == selectedFlag}
-                    />
-                </TouchableOpacity>
-            ))
-        )
-    }
+        return flags.map((item, index) => (
+            <TouchableOpacity
+                key={index}
+                onPress={() => setSelectedFlag(item.caption)}
+                style={{
+                    flex: 1, // Faz cada botão ocupar o mesmo espaço
+                    marginHorizontal: 5, // Pequeno espaçamento entre os botões
+                    borderWidth: 2,
+                    borderColor: item.caption === selectedFlag ? '#FFD700' : '#B8860B',
+                    borderRadius: 12,
+                    paddingVertical: 6,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: item.caption === selectedFlag ? '#1A1A1A' : '#0D0D0D',
+                }}
+            >
+                <Text style={{
+                    color: '#FFD700',
+                    fontWeight: item.caption === selectedFlag ? '700' : '600',
+                    fontSize: 13,
+                    textAlign: 'center',
+                }}>
+                    {item.caption}
+                </Text>
+            </TouchableOpacity>
+        ));
+    };
+
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     }
@@ -206,6 +219,7 @@ export const AuthProviderList = (props: any): any => {
                         <MaterialIcons
                             name="close"
                             size={30}
+                            color="#B8860B" // Dourado escuro - para o botão de fechar
                         />
                     </TouchableOpacity>
 
@@ -215,10 +229,11 @@ export const AuthProviderList = (props: any): any => {
                         <AntDesign
                             name="check"
                             size={30}
+                            color="#FFD700" // Dourado claro - para o botão de confirmar
                         />
                     </TouchableOpacity>
-
                 </View>
+
                 <View style={styles.content}>
                     <Input
                         title="Titulo"
@@ -248,7 +263,7 @@ export const AuthProviderList = (props: any): any => {
                                 title="Data Limite"
                                 labelStyle={styles.label}
                                 editable={false}
-                                value={selectedDate.toLocaleDateString()}
+                                value={selectedDate.toLocaleDateString('pt-BR')}
                                 onPress={() => setShowDatePicker(true)}
                             />
                         </TouchableOpacity>
@@ -257,7 +272,7 @@ export const AuthProviderList = (props: any): any => {
                                 title="Hora Limite"
                                 labelStyle={styles.label}
                                 editable={false}
-                                value={selectedTime.toLocaleTimeString()}
+                                value={selectedTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                                 onPress={() => setShowTimePicker(true)}
                             />
                         </TouchableOpacity>
@@ -302,36 +317,101 @@ export const AuthProviderList = (props: any): any => {
 export const useAuth = () => useContext(AuthContextList);
 export const styles = StyleSheet.create({
     container: {
-        width: '100%'
+        flex: 1,
+        backgroundColor: '#0D0D0D', // Preto profundo
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
     },
     header: {
         width: '100%',
-        height: 40,
-        paddingHorizontal: 40,
         flexDirection: 'row',
-        marginTop: 20,
+        alignItems: 'center',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderColor: '#B8860B', // dourado suave
+        marginBottom: 16,
     },
     title: {
-        fontSize: 20,
-        fontWeight: 'bold'
+        fontSize: 22,
+        fontWeight: '700',
+        color: '#FFD700', // dourado brilhante
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     content: {
         width: '100%',
-        paddingHorizontal: 20
+        backgroundColor: '#1A1A1A', // Preto médio
+        borderRadius: 16,
+        padding: 18,
+        shadowColor: '#FFD700',
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 3,
+        marginBottom: 20,
+    },
+    label: {
+        fontWeight: '600',
+        color: '#FFD700',
+        fontSize: 15,
+        marginBottom: 6,
     },
     containerFlag: {
         width: '100%',
-        padding: 10
-    },
-    label: {
-        fontWeight: 'bold',
-        color: '#000'
+        backgroundColor: '#1A1A1A',
+        borderRadius: 16,
+        padding: 18,
+        marginTop: 20,
+        shadowColor: '#FFD700',
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 3,
     },
     rowFlags: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+        marginTop: 10,
+    },
+    inputContainer: {
+        backgroundColor: '#0D0D0D',
+        borderWidth: 1,
+        borderColor: '#FFD700',
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 12,
+    },
+    dateTimeRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         gap: 10,
-        marginTop: 10
-    }
-})
+        marginTop: 10,
+    },
+    buttonPrimary: {
+        backgroundColor: '#FFD700',
+        paddingVertical: 12,
+        borderRadius: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        shadowColor: '#FFD700',
+        shadowOpacity: 0.4,
+        shadowRadius: 10,
+        elevation: 5,
+    },
+    buttonPrimaryText: {
+        color: '#0D0D0D',
+        fontWeight: '700',
+        fontSize: 16,
+        letterSpacing: 0.5,
+    },
+    separator: {
+        width: '100%',
+        height: 1,
+        backgroundColor: '#B8860B',
+        marginVertical: 10,
+    },
+});

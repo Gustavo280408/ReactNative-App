@@ -1,35 +1,31 @@
 import { StyleSheet } from "react-native";
-import { themas } from "../../global/themes";
 
 export const style = StyleSheet.create({
-
-    boxInput: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 40,
-        marginTop: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 5,
-        backgroundColor: themas.colors.lightGray,
-        borderColor: themas.colors.lightGray
-    },
-    input: {
-        height: '100%',
-        width: '90%',
-        borderRadius: 40,
-        paddingLeft: 5,
-    },
-    titleInput: {
-        marginLeft: 5,
-        color: themas.colors.gray,
-        marginTop: 20
-    },
-    Icon: {
-        width: '100%'
-    },
-    Button: {
-        width: '10%'
-    }
-})
+  titleInput: {
+    color: "#D4AF37", // título dourado
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 6,
+    textTransform: "uppercase",
+  },
+  boxInput: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1.5,
+    borderColor: "#D4AF37", // borda dourada ✨
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "rgba(0,0,0,0.3)", // leve transparência de fundo
+  },
+  input: {
+    fontSize: 16,
+    color: "#D4AF37", // texto dourado
+  },
+  Button: {
+    padding: 5,
+  },
+  Icon: {
+    marginHorizontal: 5,
+  },
+});

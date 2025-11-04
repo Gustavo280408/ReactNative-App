@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-
 import {
-    Text, View, Image, TextInput, TouchableOpacity,
-    Alert, ActivityIndicator
+    Text, View, ImageBackground, TouchableOpacity, Alert
 } from "react-native";
+
 import { style } from "./styles";
-import Logo from "../../assets/logo.png";
-import { MaterialIcons, Octicons } from '@expo/vector-icons'
-import { themas } from "../../global/themes"
+import { MaterialIcons, Octicons } from '@expo/vector-icons';
 import { Input } from "../../components/input";
 import { Button } from "../../components/Button";
-import { useNavigation, NavigationProp } from '@react-navigation/native'
-import BottomRoutes from "../../routes/bottom.routes";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 export default function Login() {
 
@@ -24,18 +20,16 @@ export default function Login() {
 
     async function getLogin() {
         try {
-            setLoading(true)
+            setLoading(true);
             if (!email || !password) {
                 return Alert.alert('Atenção', 'Informe os campos obrigatórios!');
             }
 
-            if (email === 'gustavo@gmail.com' && password == '12345678') {
-                navigation.reset({ routes: [{ name: "BottomRoutes" }] })
+            if (email === 'gustavo@gmail.com' && password === '12345678') {
+                navigation.reset({ routes: [{ name: "BottomRoutes" }] });
             } else {
-                Alert.alert('Atenção!', 'Senha ou e-mail inválido!')
+                Alert.alert('Atenção!', 'Senha ou e-mail inválidos!');
             }
-
-            console.log("Logou!!!!!!!!!!!!!!!");
 
         } catch (error) {
             console.log(error);
@@ -43,39 +37,55 @@ export default function Login() {
             setLoading(false);
         }
     }
+
     return (
-        < View style={style.container} >
-            <View style={style.boxTop}>
-                <Image
-                    source={Logo}
-                    style={style.logo}
-                    resizeMode="contain"
-                />
-                <Text style={style.text}>Bem vindo de volta!</Text>
+        <ImageBackground
+            source={{ uri: "https://img.freepik.com/fotos-premium/uma-balanca-de-ouro-com-as-palavras-justica_832479-6168.jpg" }}
+            style={style.background}
+        >
+            <View style={style.container}>
+
+                <View style={style.headerContainer}>
+                    <Text style={style.title}>Bem-vindo de volta</Text>
+                </View>
+
+                <View style={style.form}>
+                    <Input
+                        value={email}
+                        onChangeText={setEmail}
+                        title="E-MAIL"
+                        IconRight={MaterialIcons}
+                        IconRightName="email"
+                        titleStyle={{ color: "#D4AF37" }} // texto dourado
+                    />
+                    <Input
+                        value={password}
+                        onChangeText={setPassword}
+                        title="SENHA"
+                        IconRight={Octicons}
+                        IconRightName={showPassword ? "eye-closed" : "eye"}
+                        secureTextEntry={showPassword}
+                        onIconRightPress={() => setShowPassword(!showPassword)}
+                        titleStyle={{ color: "#D4AF37" }} // texto dourado
+                    />
+                </View>
+
+                <View style={style.footer}>
+                    <Button
+                        text="Entrar"
+                        loading={loading}
+                        onPress={() => getLogin()}
+                    />
+
+                    <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+                        <Text style={style.textBotton}>
+                            Não tem conta?
+                            <Text style={style.linkText}> Crie agora</Text>
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
-            <View style={style.boxMid}>
-                <Input
-                    value={email}
-                    onChangeText={setEmail}
-                    title="ENDEREÇO E-MAIL"
-                    IconRight={MaterialIcons}
-                    IconRightName="email"
-                />
-                <Input
-                    value={password}
-                    onChangeText={setPassword}
-                    title="SENHA"
-                    IconRight={Octicons}
-                    IconRightName={showPassword ? "eye-closed" : "eye"} //logica do olho aberto ao ver
-                    secureTextEntry={showPassword}
-                    onIconRightPress={() => setShowPassword(!showPassword)}
-                />
-            </View>
-            <View style={style.boxBotton}>
-                <Button text="Entrar" loading={loading} onPress={() => getLogin()} />
-            </View>
-            <Text style={style.textBotton}>Não tem conta?
-                <Text style={{ color: themas.colors.primary }}> Crie agora!</Text></Text>
-        </View >
-    )
+        </ImageBackground>
+    );
 }

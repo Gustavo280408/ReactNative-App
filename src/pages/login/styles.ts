@@ -1,67 +1,52 @@
 import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
-import { themas } from "../../global/themes"
 
 export const style = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+    },
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        //padding: 20
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 30,
     },
-    boxTop: {
-        height: Dimensions.get('window').height / 3,
-        width: '100%',
-        //backgroundColor: 'red'
-        alignItems: 'center',
-        justifyContent: 'center'
+    headerContainer: {
+        width: "100%",
+        alignItems: "center",
+        marginBottom: 40,
     },
-    boxMid: {
-        height: Dimensions.get('window').height / 4,
-        width: '100%',
-        //backgroundColor: 'green'
-        paddingHorizontal: 37
+    title: {
+        color: "#ffffffff",
+        fontSize: 24,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        textAlign: "center",
+        textShadowColor: "#000000",
+        textShadowOffset: { width: 5, height: 2 },
+        textShadowRadius: 2,
     },
-    boxBotton: {
-        height: Dimensions.get('window').height / 3,
-        width: '100%',
-        //backgroundColor: 'blue'
-        alignItems: 'center',
+    form: {
+        width: "100%",
+        gap: 20,
+        marginBottom: 50,
+        color: "#D4AF37"
     },
-    logo: {
-        width: 80,
-        height: 80
-    },
-    text: {
-        fontWeight: 'bold',
-        marginTop: 48,
-        fontSize: 18
-    },
-    button: {
-        width: 250,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: themas.colors.primary,
-        borderRadius: 40,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 7,
-    },
-    textButton: {
-        fontSize: 16,
-        color: '#FFF',
-        fontWeight: 'bold'
+    footer: {
+        alignItems: "center",
+        width: "100%",
     },
     textBotton: {
-        fontSize: 16,
-        color: themas.colors.gray
+        color: "#ffffff",
+        marginTop: 16,
+        fontSize: 14,
+        textShadowColor: "#000000",
+        textShadowOffset: { width: 2, height: 1 },
+        textShadowRadius: 2,
     },
-
-
-})
+    linkText: {
+        color: "#D4AF37",
+        fontWeight: "bold",
+    },
+});
