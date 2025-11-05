@@ -304,12 +304,20 @@ export const AuthProviderList = (props: any): any => {
             {props.children}
             <Modalize
                 ref={modalizeRef}
-                // modalHeight={Dimensions.get('window').height / 1.3}
-                childrenStyle={{ height: Dimensions.get('window').height / 1.3 }}
                 adjustToContentHeight={true}
+                modalStyle={{
+                    backgroundColor: '#0D0D0D', // Preto profundo
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25,
+                }}
+                childrenStyle={{
+                    backgroundColor: '#0D0D0D', // Preto também no conteúdo
+                    height: Dimensions.get('window').height / 1.3,
+                }}
             >
                 {_container()}
             </Modalize>
+
         </AuthContextList.Provider>
     )
 }

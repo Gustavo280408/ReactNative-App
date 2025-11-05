@@ -71,6 +71,7 @@ export const style = StyleSheet.create({
         textShadowColor: "#000000",
         textShadowOffset: { width: 2, height: 1 },
         textShadowRadius: 2,
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
     },
     textLink: {
         color: "#D4AF37",
