@@ -20,7 +20,7 @@ import { useAuth } from "../../context/authContext";
 
 export default function Cadastro() {
   const navigation = useNavigation<NavigationProp<any>>();
-  const { setUser } = useAuth();
+  const { setUser } = useAuth(); // pega a função do contexto global
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,21 +33,24 @@ export default function Cadastro() {
     try {
       setLoading(true);
 
+      // Verifica se todos os campos foram preenchidos
       if (!name || !email || !password || !confirmPassword) {
         return Alert.alert("Atenção", "Preencha todos os campos obrigatórios!");
       }
 
+      // Verifica se as senhas são iguais
       if (password !== confirmPassword) {
         return Alert.alert("Erro", "As senhas não coincidem!");
       }
 
-      // Salva o nome e o email no contexto global
-      setUser({ name, email });
+      // Salva nome, email e senha no contexto global
+      setUser({ name, email, password });
 
       Alert.alert("Sucesso", "Conta criada com sucesso!");
-      navigation.navigate("Login");
+      navigation.navigate("Login"); // volta para a tela de login
     } catch (error) {
       console.log(error);
+      Alert.alert("Erro", "Ocorreu um problema ao criar a conta.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +62,7 @@ export default function Cadastro() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ImageBackground
-        source={{ uri: "https://i.imgur.com/MkSmN8Q.jpeg" }}
+        source={{ uri: "https://img.freepik.com/fotos-premium/uma-balanca-de-ouro-com-as-palavras-justica_832479-6168.jpg" }}
         resizeMode="cover"
         style={style.background}
         imageStyle={{ opacity: 0.25 }}
@@ -69,7 +72,6 @@ export default function Cadastro() {
           showsVerticalScrollIndicator={false}
         >
           <View style={style.boxTop}>
-            <Image source={Logo} style={style.logo} resizeMode="contain" />
             <Text style={style.title}>Crie sua conta</Text>
             <Text style={style.subtitle}>
               Preencha seus dados para continuar
@@ -84,6 +86,7 @@ export default function Cadastro() {
               IconRight={FontAwesome}
               IconRightName="user"
             />
+
             <Input
               value={email}
               onChangeText={setEmail}
@@ -91,6 +94,7 @@ export default function Cadastro() {
               IconRight={MaterialIcons}
               IconRightName="email"
             />
+
             <Input
               value={password}
               onChangeText={setPassword}
@@ -100,6 +104,7 @@ export default function Cadastro() {
               secureTextEntry={showPassword}
               onIconRightPress={() => setShowPassword(!showPassword)}
             />
+
             <Input
               value={confirmPassword}
               onChangeText={setConfirmPassword}

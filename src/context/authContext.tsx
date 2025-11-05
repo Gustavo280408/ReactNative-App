@@ -1,27 +1,23 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface UserData {
+type User = {
   name: string;
   email: string;
-}
+  password: string;
+} | null;
 
-interface AuthContextData {
-  user: UserData | null;
-  setUser: (data: UserData) => void;
-  logout: () => void;
-}
+type AuthContextType = {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+};
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<UserData | null>(null);
-
-  function logout() {
-    setUser(null);
-  }
+  const [user, setUser] = useState<User>(null);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
