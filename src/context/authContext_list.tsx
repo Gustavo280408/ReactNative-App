@@ -22,13 +22,12 @@ const flags = [
     { caption: 'Estudos', color: themas.colors.green },
 ];
 
-
 export const AuthProviderList = (props: any): any => {
 
     const modalizeRef = useRef<Modalize>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedFlag, setSelectedFlag] = useState('Audiência');
+    const [selectedFlag, setSelectedFlag] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -37,17 +36,15 @@ export const AuthProviderList = (props: any): any => {
     const [taskList, setTaskList] = useState<Array<PropCard>>([]);
     const [taskListBackup, setTaskListBackup] = useState([]);
 
-
     const onOpen = () => {
         modalizeRef?.current?.open();
-
-    }
+    };
     const onClose = () => {
         modalizeRef?.current?.close();
-    }
+    };
 
     useEffect(() => {
-        get_taskList()
+        get_taskList();
     }, []);
 
     const _renderFlags = () => {
@@ -56,8 +53,8 @@ export const AuthProviderList = (props: any): any => {
                 key={index}
                 onPress={() => setSelectedFlag(item.caption)}
                 style={{
-                    flex: 1, // Faz cada botão ocupar o mesmo espaço
-                    marginHorizontal: 5, // Pequeno espaçamento entre os botões
+                    flex: 1,
+                    marginHorizontal: 5,
                     borderWidth: 2,
                     borderColor: item.caption === selectedFlag ? '#FFD700' : '#B8860B',
                     borderRadius: 12,
@@ -79,18 +76,20 @@ export const AuthProviderList = (props: any): any => {
         ));
     };
 
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    }
-    const handleTimeChange = (date) => {
-        setSelectedTime(date);
-    }
+    const handleDateChange = (date) => setSelectedDate(date);
+    const handleTimeChange = (date) => setSelectedTime(date);
 
     const handleSave = async () => {
-        if (!title || !description || !selectedFlag) {
-            return Alert.alert('Atenção', 'Preencha os campos corretamente!');
+        if (!title || !description) {
+            return Alert.alert('Atenção', 'Preencha todos os campos corretamente!');
         }
+
+        // Verifica se foi escolhida uma das 4 flags válidas
+        const validFlags = ['Reunião', 'Sessão', 'Intervalo', 'Estudos'];
+        if (!validFlags.includes(selectedFlag)) {
+            return Alert.alert('Atenção', 'Selecione uma das opções de flag antes de salvar!');
+        }
+
         try {
             const newItem = {
                 item: item !== 0 ? item : Date.now(),
@@ -104,108 +103,98 @@ export const AuthProviderList = (props: any): any => {
                     selectedTime.getHours(),
                     selectedTime.getMinutes()
                 ).toISOString(),
-            }
+            };
             const storageData = await AsyncStorage.getItem('taskList');
-            //console.log(storageData)
             let taskList: Array<any> = storageData ? JSON.parse(storageData) : [];
 
-            const itemIndex = taskList.findIndex((task) => task.item === newItem.item)
+            const itemIndex = taskList.findIndex((task) => task.item === newItem.item);
 
             if (itemIndex >= 0) {
-                taskList[itemIndex] = newItem
+                taskList[itemIndex] = newItem;
             } else {
-                taskList.push(newItem)
+                taskList.push(newItem);
             }
 
-            await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
+            await AsyncStorage.setItem('taskList', JSON.stringify(taskList));
 
-            setTaskList(taskList)
-            setTaskListBackup(taskList)
-            setData()
-            onClose()
+            setTaskList(taskList);
+            setTaskListBackup(taskList);
+            setData();
+            onClose();
 
         } catch (error) {
-            console.log("Erro ao salvar o item", error)
+            console.log("Erro ao salvar o item", error);
         }
+    };
 
-    }
     const setData = () => {
-        setTitle('')
-        setDescription(''),
-            setSelectedFlag('Urgente'),
-            setItem(0)
-        setSelectedDate(new Date())
-        setSelectedTime(new Date())
-    }
+        setTitle('');
+        setDescription('');
+        setSelectedFlag('');
+        setItem(0);
+        setSelectedDate(new Date());
+        setSelectedTime(new Date());
+    };
 
     async function get_taskList() {
         try {
             const storageData = await AsyncStorage.getItem('taskList');
-            const taskList = storageData ? JSON.parse(storageData) : []
-            setTaskList(taskList)
-            setTaskListBackup(taskList)
-
+            const taskList = storageData ? JSON.parse(storageData) : [];
+            setTaskList(taskList);
+            setTaskListBackup(taskList);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-
     }
 
     const handleDelete = async (itemToDelete) => {
         try {
-            const StorageData = await AsyncStorage.getItem('taskList')
-            const taskList: Array<any> = StorageData ? JSON.parse(StorageData) : []
+            const StorageData = await AsyncStorage.getItem('taskList');
+            const taskList: Array<any> = StorageData ? JSON.parse(StorageData) : [];
+            const updatedTaskList = taskList.filter(item => item.item !== itemToDelete.item);
 
-            const updatedTaskList = taskList.filter(item => item.item !== itemToDelete.item)
-
-            await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList))
-            setTaskList(updatedTaskList)
-            setTaskListBackup(updatedTaskList)
-
+            await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList));
+            setTaskList(updatedTaskList);
+            setTaskListBackup(updatedTaskList);
         } catch (error) {
-            console.log("Erro ao excluir o item", error)
+            console.log("Erro ao excluir o item", error);
         }
-    }
+    };
 
     const handleEdit = async (itemToEdit: PropCard) => {
         try {
-            setTitle(itemToEdit.title)
-            setDescription(itemToEdit.description)
-            setItem(itemToEdit.item)
-            setSelectedFlag(itemToEdit.flag)
+            setTitle(itemToEdit.title);
+            setDescription(itemToEdit.description);
+            setItem(itemToEdit.item);
+            setSelectedFlag(itemToEdit.flag);
 
             const timeLimit = new Date(itemToEdit.timeLimit);
-            setSelectedDate(timeLimit)
-            setSelectedTime(timeLimit)
+            setSelectedDate(timeLimit);
+            setSelectedTime(timeLimit);
 
-            onOpen()
-
+            onOpen();
         } catch (error) {
-            console.log('Erro ao editar')
+            console.log('Erro ao editar');
         }
-    }
+    };
 
     const filter = (t: string) => {
-        const array = taskListBackup
-        const campos = ['title', 'description']
+        const array = taskListBackup;
+        const campos = ['title', 'description'];
 
         if (t) {
-            // Limpar espacos e letra maiuscula ignorada na hora de procurar
             const searchTerm = t.trim().toLowerCase();
             const FilteredArray = array.filter((item) => {
                 for (let i = 0; i < campos.length; i++) {
-                    // Ele busca como é digitado e acha ignorando uppercase e espacos,
-                    // Busca exatamente como esta
                     if (item[campos[i]].trim().toLowerCase().includes(searchTerm))
-                        return true
+                        return true;
                 }
-            })
-
-            setTaskList(FilteredArray)
+            });
+            setTaskList(FilteredArray);
         } else {
-            setTaskList(array)
+            setTaskList(array);
         }
-    }
+    };
 
     const _container = () => {
         return (
@@ -213,13 +202,12 @@ export const AuthProviderList = (props: any): any => {
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => onClose()}>
                         <MaterialIcons
                             name="close"
                             size={30}
-                            color="#B8860B" // Dourado escuro - para o botão de fechar
+                            color="#B8860B"
                         />
                     </TouchableOpacity>
 
@@ -229,7 +217,7 @@ export const AuthProviderList = (props: any): any => {
                         <AntDesign
                             name="check"
                             size={30}
-                            color="#FFD700" // Dourado claro - para o botão de confirmar
+                            color="#FFD700"
                         />
                     </TouchableOpacity>
                 </View>
@@ -252,11 +240,8 @@ export const AuthProviderList = (props: any): any => {
                         textAlignVertical="top"
                     />
                 </View>
+
                 <View style={{ width: '40%' }}>
-                    {/* <Input
-                        title="Tempo limite:"
-                        labelStyle={styles.label}
-                    /> */}
                     <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{ width: 200 }}>
                             <Input
@@ -290,6 +275,7 @@ export const AuthProviderList = (props: any): any => {
                         type={'time'}
                     />
                 </View>
+
                 <View style={styles.containerFlag}>
                     <Text style={styles.label}>Flags:</Text>
                     <View style={styles.rowFlags}>
@@ -297,8 +283,9 @@ export const AuthProviderList = (props: any): any => {
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        )
-    }
+        );
+    };
+
     return (
         <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit, filter }}>
             {props.children}
@@ -306,27 +293,27 @@ export const AuthProviderList = (props: any): any => {
                 ref={modalizeRef}
                 adjustToContentHeight={true}
                 modalStyle={{
-                    backgroundColor: '#0D0D0D', // Preto profundo
+                    backgroundColor: '#0D0D0D',
                     borderTopLeftRadius: 25,
                     borderTopRightRadius: 25,
                 }}
                 childrenStyle={{
-                    backgroundColor: '#0D0D0D', // Preto também no conteúdo
+                    backgroundColor: '#0D0D0D',
                     height: Dimensions.get('window').height / 1.3,
                 }}
             >
                 {_container()}
             </Modalize>
-
         </AuthContextList.Provider>
-    )
-}
+    );
+};
 
 export const useAuth = () => useContext(AuthContextList);
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0D0D0D', // Preto profundo
+        backgroundColor: '#0D0D0D',
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderTopLeftRadius: 25,
@@ -339,19 +326,19 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 16,
         borderBottomWidth: 1,
-        borderColor: '#B8860B', // dourado suave
+        borderColor: '#B8860B',
         marginBottom: 16,
     },
     title: {
         fontSize: 22,
         fontWeight: '700',
-        color: '#FFD700', // dourado brilhante
+        color: '#FFD700',
         textTransform: 'uppercase',
         letterSpacing: 1,
     },
     content: {
         width: '100%',
-        backgroundColor: '#1A1A1A', // Preto médio
+        backgroundColor: '#1A1A1A',
         borderRadius: 16,
         padding: 18,
         shadowColor: '#FFD700',
